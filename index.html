@@ -27,7 +27,7 @@
 <body class="bg-gray-50">
 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyhLWQx-wZd5JGsVmts7uoZM0D0-TjgpyfGM5-uQPXTDIRdrJpnuOsnyN1HDxQ49k8yWA/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzRZjpaI0vqg8kFzpQXERl_Uh3ynT_sVidarBPOW9z3bab53SPB1nsNT3wLApr-LB2ZCQ/exec";
 </script>
 
 <div id="app" class="max-w-lg mx-auto min-h-screen flex flex-col relative">
@@ -96,6 +96,7 @@ const state = {
   currentTab: "input",
   filterCrop: "", filterDest: "",
   summaryTab: "crop",
+  stockSort: "new", // "new" or "old"
 };
 
 const UNITS = ["kg","袋","本","玉","束"];
@@ -169,6 +170,83 @@ async function deleteRecord(id) {
   if(res.success) { state.records = state.records.filter(r=>r.id.toString()!==id.toString()); setStatus("削除しました"); render(); }
 }
 
+async function updateRecord(id) {
+  const crop = v("e-crop"), dest = v("e-dest"), qty = v("e-qty");
+  if(!crop||!dest||!qty) { showToast("必須項目を入力してください"); return; }
+  const destObj = state.destinations.find(d=>d.name===dest);
+  const managed = destObj?.stockManaged||false;
+  const data = {
+    id, date:v("e-date"), crop, dest,
+    qty:Number(qty), unit:v("e-unit"),
+    amount: managed?"": (Number(v("e-amount"))||""),
+    note:v("e-note")
+  };
+  const btn = document.getElementById("edit-submit-btn");
+  btn.textContent="保存中..."; btn.disabled=true;
+  const res = await gasReq({action:"updateRecord", data:JSON.stringify(data)});
+  if(res.success) {
+    const idx = state.records.findIndex(r=>r.id.toString()===id.toString());
+    if(idx>=0) state.records[idx] = {...state.records[idx], ...data};
+    setStatus("更新しました " + nowTime());
+    showToast("更新しました！");
+    closeModal();
+    render();
+  } else { setStatus("⚠️ 更新失敗"); }
+  btn.textContent="保存する"; btn.disabled=false;
+}
+
+function openEditModal(id) {
+  const r = state.records.find(r=>r.id.toString()===id.toString());
+  if(!r) return;
+  const managed = isStockManaged(r.dest);
+  openModal(`
+    <div class="space-y-4">
+      <p class="text-base font-bold text-gray-800">出荷記録を編集</p>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">出荷日</label>
+        <input type="date" id="e-date" value="${r.date}" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">品目</label>
+        <select id="e-crop" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 bg-white">
+          ${state.crops.map(c=>`<option ${c===r.crop?"selected":""}>${c}</option>`).join("")}
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">出荷先</label>
+        <select id="e-dest" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 bg-white">
+          ${state.destinations.map(d=>`<option ${d.name===r.dest?"selected":""}>${d.name}</option>`).join("")}
+        </select>
+      </div>
+      <div class="flex gap-2">
+        <div class="flex-1">
+          <label class="block text-xs font-semibold text-gray-500 mb-1">数量</label>
+          <input type="number" id="e-qty" value="${r.qty}" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+        </div>
+        <div class="w-24">
+          <label class="block text-xs font-semibold text-gray-500 mb-1">単位</label>
+          <select id="e-unit" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 bg-white">
+            ${UNITS.map(u=>`<option ${u===r.unit?"selected":""}>${u}</option>`).join("")}
+          </select>
+        </div>
+      </div>
+      ${!managed?`
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">金額（円）</label>
+        <input type="number" id="e-amount" value="${r.amount||""}" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+      </div>`:`<input type="hidden" id="e-amount" value="">`}
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">備考</label>
+        <input type="text" id="e-note" value="${r.note||""}" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+      </div>
+      <button id="edit-submit-btn" onclick="updateRecord('${id}')"
+        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-sm transition-colors">
+        保存する
+      </button>
+      <button onclick="closeModal()" class="w-full border border-gray-200 text-gray-500 py-2.5 rounded-xl text-sm hover:bg-gray-50">閉じる</button>
+    </div>`);
+}
+
 async function submitReport(recordId) {
   const date = v("r-date"), type = v("r-type"), qty = v("r-qty");
   const amount = v("r-amount");
@@ -207,7 +285,11 @@ async function saveMaster() {
 function v(id) { return document.getElementById(id)?.value || ""; }
 function setStatus(msg) { document.getElementById("sync-status").textContent = msg; }
 function nowTime() { return new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"}); }
-function today() { return new Date().toISOString().split("T")[0]; }
+function today() {
+  const d = new Date();
+  const jst = new Date(d.getTime() + 9*60*60*1000);
+  return jst.toISOString().split("T")[0];
+}
 function spinRefresh(on) { document.getElementById("refresh-icon").style.animation = on?"spin 1s linear infinite":""; }
 function cropColor(crop) { const i=state.crops.indexOf(crop); return CROP_COLORS[i%CROP_COLORS.length]||"bg-gray-100 text-gray-700"; }
 function calcUP(amount, qty) { if(!amount||!qty||Number(qty)===0) return null; return Math.round(Number(amount)/Number(qty)); }
@@ -387,7 +469,10 @@ function renderHistory() {
               </div>
               <div class="text-right flex-shrink-0 ml-2">
                 <p class="text-xs text-gray-400">${r.date}</p>
-                <button onclick="deleteRecord('${r.id}')" class="text-xs text-red-400 hover:text-red-600 mt-1 block">削除</button>
+                <div class="flex gap-2 mt-1 justify-end">
+                  <button onclick="openEditModal('${r.id}')" class="text-xs text-blue-400 hover:text-blue-600">編集</button>
+                  <button onclick="deleteRecord('${r.id}')" class="text-xs text-red-400 hover:text-red-600">削除</button>
+                </div>
               </div>
             </div>
             ${managed?`
@@ -423,9 +508,16 @@ function renderHistory() {
 // ---- 在庫（在庫管理ONのみ） ----
 function renderStock() {
   const managedDests = state.destinations.filter(d=>d.stockManaged).map(d=>d.name);
-  const activeRecords = state.records.filter(r => {
+  let activeRecords = state.records.filter(r => {
     if(!managedDests.includes(r.dest)) return false;
     return calcStock(r).remaining > 0;
+  });
+
+  // ソート
+  activeRecords = [...activeRecords].sort((a,b) => {
+    return state.stockSort === "new"
+      ? b.date.localeCompare(a.date)
+      : a.date.localeCompare(b.date);
   });
 
   const byDest = {};
@@ -494,6 +586,10 @@ function renderStock() {
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-green-800">在庫状況</h2>
         <span class="text-xs text-blue-600 bg-blue-50 rounded-full px-3 py-1">${managedDestNames||"在庫管理なし"}</span>
+      </div>
+      <div class="flex bg-gray-100 rounded-xl p-1 gap-1">
+        <button onclick="state.stockSort='new';renderStock()" class="flex-1 py-1.5 text-xs font-semibold rounded-lg transition-colors ${state.stockSort==='new'?'bg-white text-green-700 shadow-sm':'text-gray-500'}">新しい順</button>
+        <button onclick="state.stockSort='old';renderStock()" class="flex-1 py-1.5 text-xs font-semibold rounded-lg transition-colors ${state.stockSort==='old'?'bg-white text-green-700 shadow-sm':'text-gray-500'}">古い順</button>
       </div>
       ${activeRecords.length===0?`
         <div class="text-center py-16 space-y-2">
