@@ -626,15 +626,21 @@ function renderSummary() {
     const rows = records.filter(r=>r.crop===crop);
     const qty = rows.reduce((s,r)=>s+Number(r.qty||0),0);
     const amount = rows.reduce((s,r)=>s+getAmount(r),0);
-    const st = rows.reduce((acc,r)=>{ const s=calcStock(r); return {sold:acc.sold+s.sold, disposed:acc.disposed+s.disposed, remaining:acc.remaining+Math.max(0,s.remaining)}; },{sold:0,disposed:0,remaining:0});
-    return { label:crop, count:rows.length, qty, amount, up:qty>0?Math.round(amount/qty):null, unit:rows[0]?.unit||"", ...st };
+    // 在庫管理ONの出荷だけで残数集計
+    const managedRows = rows.filter(r=>isStockManaged(r.dest));
+    const st = managedRows.reduce((acc,r)=>{ const s=calcStock(r); return {sold:acc.sold+s.sold, disposed:acc.disposed+s.disposed, remaining:acc.remaining+Math.max(0,s.remaining)}; },{sold:0,disposed:0,remaining:0});
+    const hasManaged = managedRows.length > 0;
+    return { label:crop, count:rows.length, qty, amount, up:qty>0?Math.round(amount/qty):null, unit:rows[0]?.unit||"", ...st, hasManaged };
   }).filter(r=>r.count>0);
 
   const byDest = state.destinations.map(d => {
     const rows = records.filter(r=>r.dest===d.name);
     const qty = rows.reduce((s,r)=>s+Number(r.qty||0),0);
     const amount = rows.reduce((s,r)=>s+getAmount(r),0);
-    const st = rows.reduce((acc,r)=>{ const s=calcStock(r); return {sold:acc.sold+s.sold, disposed:acc.disposed+s.disposed, remaining:acc.remaining+Math.max(0,s.remaining)}; },{sold:0,disposed:0,remaining:0});
+    // 在庫管理ONの出荷先のみ残数集計
+    const st = d.stockManaged
+      ? rows.reduce((acc,r)=>{ const s=calcStock(r); return {sold:acc.sold+s.sold, disposed:acc.disposed+s.disposed, remaining:acc.remaining+Math.max(0,s.remaining)}; },{sold:0,disposed:0,remaining:0})
+      : {sold:0,disposed:0,remaining:0};
     return { label:d.name, count:rows.length, qty, amount, up:qty>0?Math.round(amount/qty):null, unit:rows[0]?.unit||"", managed:d.stockManaged, ...st };
   }).filter(r=>r.count>0);
 
@@ -676,7 +682,7 @@ function renderSummary() {
         <div class="w-full bg-gray-100 rounded-full h-1.5">
           <div class="bg-green-500 h-1.5 rounded-full" style="width:${Math.round((r.amount/maxAmt)*100)}%"></div>
         </div>
-        ${showStock&&(r.managed!==false)?`
+        ${showStock&&(r.managed===true||r.hasManaged)?`
         <div class="flex gap-3 text-xs text-gray-500 pt-1">
           <span>出荷 <b class="text-gray-700">${r.qty}${r.unit}</b></span>
           ${r.sold>0?`<span>販売済 <b class="text-green-600">${r.sold}${r.unit}</b></span>`:""}
