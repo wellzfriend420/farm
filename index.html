@@ -25,11 +25,11 @@
 </style>
 </head>
 <body class="bg-gray-50">
-
+ 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzRZjpaI0vqg8kFzpQXERl_Uh3ynT_sVidarBPOW9z3bab53SPB1nsNT3wLApr-LB2ZCQ/exec";
+const GAS_URL = "ここにApps ScriptのURLを貼り付けてください";
 </script>
-
+ 
 <div id="app" class="max-w-lg mx-auto min-h-screen flex flex-col relative">
   <!-- ヘッダー -->
   <div class="bg-green-700 text-white px-4 py-3 flex items-center justify-between shadow-md sticky top-0 z-10">
@@ -46,62 +46,68 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzRZjpaI0vqg8kFzpQXERl_
       </svg>
     </button>
   </div>
-
+ 
   <!-- コンテンツ -->
   <div class="flex-1 overflow-y-auto pb-24">
     <div id="tab-input"    class="fade-in"></div>
     <div id="tab-history"  class="hidden"></div>
     <div id="tab-stock"    class="hidden"></div>
+    <div id="tab-payment"  class="hidden"></div>
     <div id="tab-summary"  class="hidden"></div>
     <div id="tab-settings" class="hidden"></div>
   </div>
-
+ 
   <!-- ボトムナビ -->
   <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-white border-t border-gray-200 flex shadow-lg z-10">
-    <button onclick="showTab('input')"    id="nav-input"    class="flex-1 flex flex-col items-center py-2.5 gap-0.5 text-green-700">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-      <span class="text-xs font-medium">入力</span>
+    <button onclick="showTab('input')"    id="nav-input"    class="flex-1 flex flex-col items-center py-2 gap-0.5 text-green-700">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      <span class="text-[10px] font-medium">入力</span>
     </button>
-    <button onclick="showTab('history')"  id="nav-history"  class="flex-1 flex flex-col items-center py-2.5 gap-0.5 text-gray-400">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-      <span class="text-xs font-medium">履歴</span>
+    <button onclick="showTab('history')"  id="nav-history"  class="flex-1 flex flex-col items-center py-2 gap-0.5 text-gray-400">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <span class="text-[10px] font-medium">履歴</span>
     </button>
-    <button onclick="showTab('stock')"    id="nav-stock"    class="flex-1 flex flex-col items-center py-2.5 gap-0.5 text-gray-400">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-      <span class="text-xs font-medium">在庫</span>
+    <button onclick="showTab('stock')"    id="nav-stock"    class="flex-1 flex flex-col items-center py-2 gap-0.5 text-gray-400">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      <span class="text-[10px] font-medium">在庫</span>
     </button>
-    <button onclick="showTab('summary')"  id="nav-summary"  class="flex-1 flex flex-col items-center py-2.5 gap-0.5 text-gray-400">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-      <span class="text-xs font-medium">集計</span>
+    <button onclick="showTab('payment')"  id="nav-payment"  class="flex-1 flex flex-col items-center py-2 gap-0.5 text-gray-400">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h5M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+      <span class="text-[10px] font-medium">入金</span>
     </button>
-    <button onclick="showTab('settings')" id="nav-settings" class="flex-1 flex flex-col items-center py-2.5 gap-0.5 text-gray-400">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-      <span class="text-xs font-medium">設定</span>
+    <button onclick="showTab('summary')"  id="nav-summary"  class="flex-1 flex flex-col items-center py-2 gap-0.5 text-gray-400">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      <span class="text-[10px] font-medium">集計</span>
+    </button>
+    <button onclick="showTab('settings')" id="nav-settings" class="flex-1 flex flex-col items-center py-2 gap-0.5 text-gray-400">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <span class="text-[10px] font-medium">設定</span>
     </button>
   </div>
 </div>
-
+ 
 <!-- モーダル -->
 <div id="modal" class="hidden modal-bg" onclick="closeModal(event)">
   <div class="modal-box" id="modal-content"></div>
 </div>
-
+ 
 <script>
 // ============================================================
 // 状態
 // ============================================================
 const state = {
-  records: [], reports: [], crops: [],
+  records: [], reports: [], crops: [], payments: [],
   destinations: [], // [{ name, stockManaged }]
   currentTab: "input",
   filterCrop: "", filterDest: "",
   summaryTab: "crop",
   stockSort: "new", // "new" or "old"
+  paymentDest: "",
 };
-
+ 
 const UNITS = ["kg","袋","本","玉","束"];
 const CROP_COLORS = ["bg-yellow-100 text-yellow-800","bg-green-100 text-green-800","bg-lime-100 text-lime-800","bg-orange-100 text-orange-800","bg-purple-100 text-purple-800","bg-blue-100 text-blue-800"];
-
+ 
 // ============================================================
 // API
 // ============================================================
@@ -111,7 +117,7 @@ async function gasReq(params) {
   const res = await fetch(url.toString());
   return res.json();
 }
-
+ 
 async function loadAll() {
   setStatus("同期中...");
   spinRefresh(true);
@@ -119,6 +125,7 @@ async function loadAll() {
     const [d, m] = await Promise.all([gasReq({action:"getAll"}), gasReq({action:"getMaster"})]);
     state.records = d.records || [];
     state.reports = d.reports || [];
+    state.payments = (d.payments || []).map(p => ({...p, targetIds: safeParseIds(p.targetIds)}));
     state.crops = m.crops || [];
     state.destinations = m.destinations || [];
     setStatus("同期済み " + nowTime());
@@ -126,7 +133,11 @@ async function loadAll() {
   } catch(e) { setStatus("⚠️ 接続エラー"); }
   spinRefresh(false);
 }
-
+ 
+function safeParseIds(val) {
+  try { return JSON.parse(val); } catch(e) { return []; }
+}
+ 
 async function submitRecord() {
   const crop = v("f-crop"), dest = v("f-dest"), qty = v("f-qty");
   let ok = true;
@@ -137,11 +148,11 @@ async function submitRecord() {
     if(empty) ok = false;
   });
   if(!ok) return;
-
+ 
   // 在庫管理ONの出荷先は金額なしで登録
   const destObj = state.destinations.find(d => d.name === dest);
   const isStockManaged = destObj?.stockManaged || false;
-
+ 
   const btn = document.getElementById("submit-btn");
   btn.textContent = "保存中..."; btn.disabled = true;
   const data = {
@@ -163,13 +174,13 @@ async function submitRecord() {
   } else { setStatus("⚠️ 保存失敗"); }
   btn.textContent = "登録する"; btn.disabled = false;
 }
-
+ 
 async function deleteRecord(id) {
   if(!confirm("この出荷記録を削除しますか？")) return;
   const res = await gasReq({action:"deleteRecord", id});
   if(res.success) { state.records = state.records.filter(r=>r.id.toString()!==id.toString()); setStatus("削除しました"); render(); }
 }
-
+ 
 async function updateRecord(id) {
   const crop = v("e-crop"), dest = v("e-dest"), qty = v("e-qty");
   if(!crop||!dest||!qty) { showToast("必須項目を入力してください"); return; }
@@ -194,7 +205,7 @@ async function updateRecord(id) {
   } else { setStatus("⚠️ 更新失敗"); }
   btn.textContent="保存する"; btn.disabled=false;
 }
-
+ 
 function openEditModal(id) {
   const r = state.records.find(r=>r.id.toString()===id.toString());
   if(!r) return;
@@ -246,7 +257,7 @@ function openEditModal(id) {
       <button onclick="closeModal()" class="w-full border border-gray-200 text-gray-500 py-2.5 rounded-xl text-sm hover:bg-gray-50">閉じる</button>
     </div>`);
 }
-
+ 
 async function submitReport(recordId) {
   const date = v("r-date"), type = v("r-type"), qty = v("r-qty");
   const amount = v("r-amount");
@@ -265,20 +276,54 @@ async function submitReport(recordId) {
   } else { setStatus("⚠️ 保存失敗"); }
   btn.textContent = "登録する"; btn.disabled = false;
 }
-
+ 
 async function deleteReport(id) {
   if(!confirm("この報告を削除しますか？")) return;
   const res = await gasReq({action:"deleteReport", id});
   if(res.success) { state.reports = state.reports.filter(r=>r.id.toString()!==id.toString()); setStatus("削除しました"); render(); closeModal(); }
 }
-
+ 
+async function submitPayment(destName) {
+  const checked = Array.from(document.querySelectorAll(".pay-check:checked")).map(el=>el.dataset.id+"|"+el.dataset.type);
+  if(checked.length===0) { showToast("対象を選択してください"); return; }
+  const targetType = checked[0].split("|")[1]; // 同一出荷先なので全部同じtargetType
+  const targetIds = checked.map(c=>c.split("|")[0]);
+  const totalAmount = Number(document.getElementById("pay-total")?.dataset.total || 0);
+  const fee = Number(v("pay-fee")) || 0;
+  const paidAmount = totalAmount - fee;
+  const date = v("pay-date");
+  const note = v("pay-note");
+ 
+  const btn = document.getElementById("pay-submit-btn");
+  btn.textContent="保存中..."; btn.disabled=true;
+  const data = { date, dest:destName, targetType, targetIds, totalAmount, fee, paidAmount, note };
+  const res = await gasReq({action:"addPayment", data:JSON.stringify(data)});
+  if(res.success) {
+    state.payments.push({...data, id:res.id});
+    setStatus("入金を記録しました " + nowTime());
+    showToast("入金を記録しました！");
+    renderPayment();
+  } else { setStatus("⚠️ 保存失敗"); }
+  btn.textContent="入金を記録する"; btn.disabled=false;
+}
+ 
+async function deletePayment(id) {
+  if(!confirm("この入金記録を削除しますか？\n対象の取引は再び未入金に戻ります。")) return;
+  const res = await gasReq({action:"deletePayment", id});
+  if(res.success) {
+    state.payments = state.payments.filter(p=>p.id.toString()!==id.toString());
+    setStatus("削除しました");
+    renderPayment();
+  }
+}
+ 
 async function saveMaster() {
   setStatus("保存中...");
   const res = await gasReq({action:"saveMaster", data:JSON.stringify({crops:state.crops, destinations:state.destinations})});
   if(res.success) { setStatus("設定を保存しました " + nowTime()); showToast("マスタを保存しました！"); }
   else setStatus("⚠️ 保存失敗");
 }
-
+ 
 // ============================================================
 // ユーティリティ
 // ============================================================
@@ -295,7 +340,7 @@ function cropColor(crop) { const i=state.crops.indexOf(crop); return CROP_COLORS
 function calcUP(amount, qty) { if(!amount||!qty||Number(qty)===0) return null; return Math.round(Number(amount)/Number(qty)); }
 function isStockManaged(destName) { return state.destinations.find(d=>d.name===destName)?.stockManaged||false; }
 function destNames() { return state.destinations.map(d=>d.name); }
-
+ 
 function showToast(msg) {
   const t = document.createElement("div");
   t.className = "fixed top-20 left-1/2 -translate-x-1/2 bg-green-700 text-white text-sm font-semibold px-5 py-3 rounded-2xl shadow-lg z-50 fade-in";
@@ -303,7 +348,7 @@ function showToast(msg) {
   document.body.appendChild(t);
   setTimeout(()=>t.remove(), 2500);
 }
-
+ 
 function calcStock(record) {
   const reps = state.reports.filter(r=>r.recordId.toString()===record.id.toString());
   const sold = reps.filter(r=>r.type==="販売").reduce((s,r)=>s+Number(r.qty),0);
@@ -311,10 +356,53 @@ function calcStock(record) {
   const soldAmount = reps.filter(r=>r.type==="販売").reduce((s,r)=>s+Number(r.amount||0),0);
   return { sold, disposed, remaining: Number(record.qty)-sold-disposed, soldAmount };
 }
-
+ 
+// ---- 入金関連ヘルパー ----
+// すでに入金済みの report/record id を集める
+function getPaidIds(targetType) {
+  const ids = new Set();
+  state.payments.filter(p=>p.targetType===targetType).forEach(p => {
+    (p.targetIds||[]).forEach(id => ids.add(id.toString()));
+  });
+  return ids;
+}
+ 
+// 出荷先ごとの「未入金の取引」一覧（report or record）を返す
+function getUnpaidTransactions(destName) {
+  const managed = isStockManaged(destName);
+  const list = [];
+  if (managed) {
+    // 在庫管理ONは販売報告（type=販売のみ）が対象
+    const paidIds = getPaidIds("report");
+    state.reports.filter(r=>r.type==="販売").forEach(r => {
+      if (paidIds.has(r.id.toString())) return;
+      const record = state.records.find(rec=>rec.id.toString()===r.recordId.toString());
+      if (!record || record.dest !== destName) return;
+      list.push({
+        id: r.id, targetType:"report", date:r.date,
+        crop: record.crop, unit: record.unit,
+        qty: r.qty, amount: Number(r.amount||0), note: r.note||""
+      });
+    });
+  } else {
+    // 在庫管理OFFは出荷記録そのものが対象
+    const paidIds = getPaidIds("record");
+    state.records.filter(r=>r.dest===destName).forEach(r => {
+      if (paidIds.has(r.id.toString())) return;
+      if (!r.amount) return; // 金額未入力は対象外
+      list.push({
+        id: r.id, targetType:"record", date:r.date,
+        crop: r.crop, unit: r.unit,
+        qty: r.qty, amount: Number(r.amount||0), note: r.note||""
+      });
+    });
+  }
+  return list.sort((a,b)=>b.date.localeCompare(a.date));
+}
+ 
 function showTab(name) {
   state.currentTab = name;
-  ["input","history","stock","summary","settings"].forEach(t => {
+  ["input","history","stock","payment","summary","settings"].forEach(t => {
     const content = document.getElementById("tab-"+t);
     content.classList.toggle("hidden", t!==name);
     if(t===name) content.classList.add("fade-in");
@@ -323,7 +411,7 @@ function showTab(name) {
   });
   render();
 }
-
+ 
 function openModal(html) {
   document.getElementById("modal-content").innerHTML = html;
   document.getElementById("modal").classList.remove("hidden");
@@ -331,7 +419,7 @@ function openModal(html) {
 function closeModal(e) {
   if(!e||e.target.id==="modal") document.getElementById("modal").classList.add("hidden");
 }
-
+ 
 // ============================================================
 // レンダリング
 // ============================================================
@@ -340,10 +428,11 @@ function render() {
   if(t==="input")    renderInput();
   if(t==="history")  renderHistory();
   if(t==="stock")    renderStock();
+  if(t==="payment")  renderPayment();
   if(t==="summary")  renderSummary();
   if(t==="settings") renderSettings();
 }
-
+ 
 // ---- 入力 ----
 function renderInput() {
   document.getElementById("tab-input").innerHTML = `
@@ -406,7 +495,7 @@ function renderInput() {
       </div>
     </div>`;
 }
-
+ 
 function onDestChange() {
   const dest = v("f-dest");
   const managed = isStockManaged(dest);
@@ -425,7 +514,7 @@ function onDestChange() {
     amountNote?.classList.add("hidden");
   }
 }
-
+ 
 function updateUP() {
   const qty=v("f-qty"), amount=v("f-amount"), unit=v("f-unit");
   const up=calcUP(amount,qty);
@@ -434,7 +523,7 @@ function updateUP() {
   if(up!==null){ disp?.classList.remove("hidden"); if(val) val.textContent=`¥${up.toLocaleString()} / ${unit||"単位"}`; }
   else disp?.classList.add("hidden");
 }
-
+ 
 // ---- 履歴 ----
 function renderHistory() {
   const filtered = state.records.filter(r=>
@@ -486,7 +575,7 @@ function renderHistory() {
             </div>`:""}
           </div>`;
       }).join("");
-
+ 
   document.getElementById("tab-history").innerHTML = `
     <div class="p-4 space-y-4">
       <h2 class="text-lg font-bold text-green-800">出荷履歴</h2>
@@ -504,7 +593,7 @@ function renderHistory() {
       <div class="space-y-2">${cards}</div>
     </div>`;
 }
-
+ 
 // ---- 在庫（在庫管理ONのみ） ----
 function renderStock() {
   const managedDests = state.destinations.filter(d=>d.stockManaged).map(d=>d.name);
@@ -512,20 +601,20 @@ function renderStock() {
     if(!managedDests.includes(r.dest)) return false;
     return calcStock(r).remaining > 0;
   });
-
+ 
   // ソート
   activeRecords = [...activeRecords].sort((a,b) => {
     return state.stockSort === "new"
       ? b.date.localeCompare(a.date)
       : a.date.localeCompare(b.date);
   });
-
+ 
   const byDest = {};
   activeRecords.forEach(r => { if(!byDest[r.dest]) byDest[r.dest]=[]; byDest[r.dest].push(r); });
-
+ 
   const byCrop = {};
   activeRecords.forEach(r => { if(!byCrop[r.crop]) byCrop[r.crop]=[]; byCrop[r.crop].push(r); });
-
+ 
   const destCards = Object.entries(byDest).map(([dest,records]) => {
     const rows = records.map(r => {
       const st = calcStock(r);
@@ -556,7 +645,7 @@ function renderStock() {
     }).join("");
     return `<div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4"><p class="text-sm font-bold text-gray-700 mb-3">📦 ${dest}</p>${rows}</div>`;
   }).join("");
-
+ 
   const cropCards = Object.entries(byCrop).map(([crop,records]) => {
     const totalRemaining = records.reduce((s,r)=>s+calcStock(r).remaining,0);
     const totalShipped = records.reduce((s,r)=>s+Number(r.qty),0);
@@ -578,9 +667,9 @@ function renderStock() {
         <p class="text-xs text-gray-400 mt-1">${records.length}件出荷中 合計${totalShipped}${unit}</p>
       </div>`;
   }).join("");
-
+ 
   const managedDestNames = managedDests.join("・");
-
+ 
   document.getElementById("tab-stock").innerHTML = `
     <div class="p-4 space-y-4">
       <div class="flex items-center justify-between">
@@ -607,43 +696,152 @@ function renderStock() {
         </div>`}
     </div>`;
 }
-
+ 
+// ---- 入金 ----
+function renderPayment() {
+  const destOptions = state.destinations.map(d=>d.name);
+  if (!state.paymentDest && destOptions.length>0) state.paymentDest = destOptions[0];
+  const destName = state.paymentDest;
+ 
+  const unpaid = destName ? getUnpaidTransactions(destName) : [];
+ 
+  // 入金履歴（その出荷先の）
+  const history = state.payments
+    .filter(p=>p.dest===destName)
+    .sort((a,b)=>b.date.localeCompare(a.date));
+ 
+  const unpaidRows = unpaid.length===0
+    ? `<p class="text-xs text-gray-400 py-6 text-center">未入金の取引はありません</p>`
+    : unpaid.map(t => `
+        <label class="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 cursor-pointer">
+          <input type="checkbox" class="pay-check w-4 h-4 accent-green-600" data-id="${t.id}" data-type="${t.targetType}" data-amount="${t.amount}" onchange="updatePaymentTotal()">
+          <div class="flex-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-full ${cropColor(t.crop)}">${t.crop}</span>
+              <span class="text-xs text-gray-400">${t.date}</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-0.5">${t.qty}${t.unit}${t.note?" / "+t.note:""}</p>
+          </div>
+          <p class="text-sm font-bold text-gray-800">¥${t.amount.toLocaleString()}</p>
+        </label>`).join("");
+ 
+  const historyRows = history.length===0
+    ? `<p class="text-xs text-gray-400 py-4 text-center">入金履歴はありません</p>`
+    : history.map(p => `
+        <div class="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
+          <div>
+            <p class="text-xs text-gray-500">${p.date}　対象${(p.targetIds||[]).length}件</p>
+            <p class="text-sm text-gray-700">売上 ¥${Number(p.totalAmount).toLocaleString()}　手数料 ¥${Number(p.fee||0).toLocaleString()}</p>
+            ${p.note?`<p class="text-xs text-gray-400">${p.note}</p>`:""}
+          </div>
+          <div class="text-right">
+            <p class="text-sm font-bold text-green-700">¥${Number(p.paidAmount).toLocaleString()}</p>
+            <button onclick="deletePayment('${p.id}')" class="text-xs text-red-400 hover:text-red-600">削除</button>
+          </div>
+        </div>`).join("");
+ 
+  document.getElementById("tab-payment").innerHTML = `
+    <div class="p-4 space-y-4">
+      <h2 class="text-lg font-bold text-green-800">入金管理</h2>
+ 
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">出荷先</label>
+        <select onchange="state.paymentDest=this.value;renderPayment()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-400">
+          ${destOptions.map(d=>`<option ${d===destName?"selected":""}>${d}</option>`).join("")}
+        </select>
+      </div>
+ 
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+        <p class="text-sm font-bold text-gray-700 mb-1">未入金の取引</p>
+        <div class="max-h-72 overflow-y-auto">${unpaidRows}</div>
+      </div>
+ 
+      ${unpaid.length>0?`
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 space-y-3">
+        <p class="text-sm font-bold text-gray-700">入金を記録する</p>
+        <div class="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2.5">
+          <span class="text-xs text-gray-500">選択中の売上合計</span>
+          <span id="pay-total" data-total="0" class="text-base font-bold text-gray-800">¥0</span>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">入金日</label>
+          <input type="date" id="pay-date" value="${today()}" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">手数料（円）</label>
+          <input type="number" id="pay-fee" placeholder="0" oninput="updatePaymentTotal()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+        </div>
+        <div class="flex items-center justify-between bg-green-50 rounded-xl px-3 py-2.5">
+          <span class="text-xs text-green-700 font-semibold">入金額（売上－手数料）</span>
+          <span id="pay-final" class="text-base font-bold text-green-700">¥0</span>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">メモ</label>
+          <input type="text" id="pay-note" placeholder="任意" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+        </div>
+        <button id="pay-submit-btn" onclick="submitPayment('${destName}')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-sm transition-colors">
+          入金を記録する
+        </button>
+      </div>`:""}
+ 
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+        <p class="text-sm font-bold text-gray-700 mb-1">入金履歴</p>
+        <div>${historyRows}</div>
+      </div>
+    </div>`;
+}
+ 
+function updatePaymentTotal() {
+  const checked = Array.from(document.querySelectorAll(".pay-check:checked"));
+  const total = checked.reduce((s,el)=>s+Number(el.dataset.amount||0),0);
+  const fee = Number(document.getElementById("pay-fee")?.value)||0;
+  const totalEl = document.getElementById("pay-total");
+  const finalEl = document.getElementById("pay-final");
+  if(totalEl) { totalEl.textContent = `¥${total.toLocaleString()}`; totalEl.dataset.total = total; }
+  if(finalEl) finalEl.textContent = `¥${(total-fee).toLocaleString()}`;
+}
+ 
 // ---- 集計 ----
 function renderSummary() {
   const records = state.records;
-
+ 
   // 在庫管理ONの売上は販売報告から、OFFは出荷記録から集計
   function getAmount(r) {
     if(isStockManaged(r.dest)) return calcStock(r).soldAmount;
     return Number(r.amount||0);
   }
-
+ 
   const totalAmount = records.reduce((s,r)=>s+getAmount(r),0);
   const totalQty = records.reduce((s,r)=>s+Number(r.qty||0),0);
   const avgUp = totalQty>0?Math.round(totalAmount/totalQty):null;
-
+ 
   const byCrop = state.crops.map(crop => {
     const rows = records.filter(r=>r.crop===crop);
     const qty = rows.reduce((s,r)=>s+Number(r.qty||0),0);
     const amount = rows.reduce((s,r)=>s+getAmount(r),0);
-    // 在庫管理ONの出荷だけで残数集計
-    const managedRows = rows.filter(r=>isStockManaged(r.dest));
-    const st = managedRows.reduce((acc,r)=>{ const s=calcStock(r); return {sold:acc.sold+s.sold, disposed:acc.disposed+s.disposed, remaining:acc.remaining+Math.max(0,s.remaining)}; },{sold:0,disposed:0,remaining:0});
-    const hasManaged = managedRows.length > 0;
-    return { label:crop, count:rows.length, qty, amount, up:qty>0?Math.round(amount/qty):null, unit:rows[0]?.unit||"", ...st, hasManaged };
+    // 在庫管理ONは販売報告から残数集計、OFFは出荷時点で全量販売済とみなす
+    const st = rows.reduce((acc,r) => {
+      if (isStockManaged(r.dest)) {
+        const s = calcStock(r);
+        return { sold:acc.sold+s.sold, disposed:acc.disposed+s.disposed, remaining:acc.remaining+Math.max(0,s.remaining) };
+      } else {
+        return { sold:acc.sold+Number(r.qty||0), disposed:acc.disposed, remaining:acc.remaining };
+      }
+    }, {sold:0,disposed:0,remaining:0});
+    return { label:crop, count:rows.length, qty, amount, up:qty>0?Math.round(amount/qty):null, unit:rows[0]?.unit||"", ...st, hasManaged:true };
   }).filter(r=>r.count>0);
-
+ 
   const byDest = state.destinations.map(d => {
     const rows = records.filter(r=>r.dest===d.name);
     const qty = rows.reduce((s,r)=>s+Number(r.qty||0),0);
     const amount = rows.reduce((s,r)=>s+getAmount(r),0);
-    // 在庫管理ONの出荷先のみ残数集計
+    // 在庫管理ONは販売報告から残数集計、OFFは出荷時点で全量販売済とみなす
     const st = d.stockManaged
       ? rows.reduce((acc,r)=>{ const s=calcStock(r); return {sold:acc.sold+s.sold, disposed:acc.disposed+s.disposed, remaining:acc.remaining+Math.max(0,s.remaining)}; },{sold:0,disposed:0,remaining:0})
-      : {sold:0,disposed:0,remaining:0};
+      : { sold: qty, disposed: 0, remaining: 0 };
     return { label:d.name, count:rows.length, qty, amount, up:qty>0?Math.round(amount/qty):null, unit:rows[0]?.unit||"", managed:d.stockManaged, ...st };
   }).filter(r=>r.count>0);
-
+ 
   const monthMap = {};
   records.forEach(r => {
     const m = r.date.slice(0,7);
@@ -654,17 +852,17 @@ function renderSummary() {
   });
   const byMonth = Object.entries(monthMap).sort((a,b)=>b[0].localeCompare(a[0]))
     .map(([k,v])=>({label:k.replace("-","年")+"月",...v,up:v.qty>0?Math.round(v.amount/v.qty):null,unit:"",sold:0,disposed:0,remaining:0}));
-
+ 
   const list = state.summaryTab==="crop"?byCrop:state.summaryTab==="dest"?byDest:byMonth;
   const maxAmt = Math.max(...list.map(r=>r.amount),1);
   const showStock = state.summaryTab!=="month";
-
+ 
   const tabBtn=(key,label)=>`
     <button onclick="state.summaryTab='${key}';renderSummary()"
       class="flex-1 py-1.5 text-xs font-semibold rounded-lg transition-colors ${state.summaryTab===key?"bg-white text-green-700 shadow-sm":"text-gray-500"}">
       ${label}
     </button>`;
-
+ 
   const cards = list.length===0
     ?`<div class="text-center text-gray-400 text-sm py-16">データがありません</div>`
     :list.map(r=>`
@@ -690,7 +888,7 @@ function renderSummary() {
           ${r.remaining>0?`<span>残 <b class="text-orange-500">${r.remaining}${r.unit}</b></span>`:""}
         </div>`:""}
       </div>`).join("");
-
+ 
   document.getElementById("tab-summary").innerHTML = `
     <div class="p-4 space-y-4">
       <h2 class="text-lg font-bold text-green-800">集計</h2>
@@ -712,14 +910,14 @@ function renderSummary() {
       <div class="space-y-3">${cards}</div>
     </div>`;
 }
-
+ 
 // ---- 設定 ----
 function renderSettings() {
   const cropTags = state.crops.map((c,i)=>`
     <span class="flex items-center gap-1 bg-green-50 text-green-800 text-xs font-medium px-3 py-1.5 rounded-full">
       ${c}<button onclick="removeCrop(${i})" class="text-green-400 hover:text-red-500 font-bold ml-1">×</button>
     </span>`).join("");
-
+ 
   const destRows = state.destinations.map((d,i)=>`
     <div class="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
       <span class="text-sm text-gray-700 font-medium">${d.name}</span>
@@ -732,11 +930,11 @@ function renderSettings() {
         <button onclick="removeDest(${i})" class="text-gray-300 hover:text-red-500 font-bold text-lg leading-none">×</button>
       </div>
     </div>`).join("");
-
+ 
   document.getElementById("tab-settings").innerHTML = `
     <div class="p-4 space-y-5">
       <h2 class="text-lg font-bold text-green-800">マスタ管理</h2>
-
+ 
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 space-y-3">
         <p class="text-sm font-bold text-gray-700">品目</p>
         <div class="flex flex-wrap gap-2">${cropTags||'<p class="text-xs text-gray-400">品目がありません</p>'}</div>
@@ -746,7 +944,7 @@ function renderSettings() {
           <button onclick="addCrop()" class="bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-green-700">追加</button>
         </div>
       </div>
-
+ 
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 space-y-1">
         <p class="text-sm font-bold text-gray-700 mb-2">出荷先 / 在庫管理</p>
         ${destRows||'<p class="text-xs text-gray-400 py-2">出荷先がありません</p>'}
@@ -756,12 +954,12 @@ function renderSettings() {
           <button onclick="addDest()" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700">追加</button>
         </div>
       </div>
-
+ 
       <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4">
         <p class="text-xs font-semibold text-blue-700 mb-1">在庫管理 ON について</p>
         <p class="text-xs text-blue-600">ONにした出荷先は在庫タブに表示され、出荷時の金額入力が不要になります。金額は販売報告時に入力できます。</p>
       </div>
-
+ 
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 space-y-2">
         <p class="text-sm font-bold text-gray-700">マスタを保存</p>
         <p class="text-xs text-gray-400">変更したら必ず保存してください</p>
@@ -769,13 +967,13 @@ function renderSettings() {
       </div>
     </div>`;
 }
-
+ 
 function toggleStock(i, val) { state.destinations[i].stockManaged = val; renderSettings(); }
 function addCrop() { const val=document.getElementById("new-crop")?.value.trim(); if(val&&!state.crops.includes(val)){state.crops.push(val);renderSettings();} }
 function removeCrop(i) { state.crops.splice(i,1); renderSettings(); }
 function addDest() { const val=document.getElementById("new-dest")?.value.trim(); if(val&&!state.destinations.find(d=>d.name===val)){state.destinations.push({name:val,stockManaged:false});renderSettings();} }
 function removeDest(i) { state.destinations.splice(i,1); renderSettings(); }
-
+ 
 // ---- 報告モーダル ----
 function openReportModal(recordId) {
   const record = state.records.find(r=>r.id.toString()===recordId.toString());
@@ -795,7 +993,7 @@ function openReportModal(recordId) {
         </div>
         <button onclick="deleteReport('${r.id}')" class="text-xs text-red-400 hover:text-red-600 ml-2">削除</button>
       </div>`).join("");
-
+ 
   openModal(`
     <div class="space-y-4">
       <div>
@@ -812,12 +1010,12 @@ function openReportModal(recordId) {
           ${st.soldAmount>0?`<span class="ml-1 text-gray-500">販売額 ¥${st.soldAmount.toLocaleString()}</span>`:""}
         </div>
       </div>
-
+ 
       <div class="bg-gray-50 rounded-xl p-3">
         <p class="text-xs font-semibold text-gray-500 mb-2">これまでの報告</p>
         ${reportList}
       </div>
-
+ 
       <div class="space-y-3">
         <p class="text-sm font-bold text-gray-700">販売報告を追加</p>
         <div class="flex gap-2">
@@ -856,13 +1054,13 @@ function openReportModal(recordId) {
       </div>
     </div>`);
 }
-
+ 
 function onReportTypeChange() {
   const type = document.getElementById("r-type")?.value;
   const amountSection = document.getElementById("r-amount-section");
   if(amountSection) amountSection.style.display = type==="破棄"?"none":"";
 }
-
+ 
 // ============================================================
 // 起動
 // ============================================================
