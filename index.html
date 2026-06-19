@@ -102,6 +102,7 @@ const state = {
   filterCrop: "", filterDest: "",
   summaryTab: "crop",
   stockSort: "new", // "new" or "old"
+  historySort: "new", // "new" or "old"
   paymentDest: "",
 };
  
@@ -526,10 +527,15 @@ function updateUP() {
  
 // ---- 履歴 ----
 function renderHistory() {
-  const filtered = state.records.filter(r=>
+  let filtered = state.records.filter(r=>
     (!state.filterCrop||r.crop===state.filterCrop)&&
     (!state.filterDest||r.dest===state.filterDest)
   );
+  filtered = [...filtered].sort((a,b) => {
+    return state.historySort === "new"
+      ? b.date.localeCompare(a.date)
+      : a.date.localeCompare(b.date);
+  });
   const cards = filtered.length===0
     ? `<div class="text-center text-gray-400 text-sm py-16">記録がありません</div>`
     : filtered.map(r => {
@@ -588,6 +594,10 @@ function renderHistory() {
           <option value="">出荷先：すべて</option>
           ${state.destinations.map(d=>`<option ${state.filterDest===d.name?"selected":""}>${d.name}</option>`).join("")}
         </select>
+      </div>
+      <div class="flex bg-gray-100 rounded-xl p-1 gap-1">
+        <button onclick="state.historySort='new';renderHistory()" class="flex-1 py-1.5 text-xs font-semibold rounded-lg transition-colors ${state.historySort==='new'?'bg-white text-green-700 shadow-sm':'text-gray-500'}">新しい順</button>
+        <button onclick="state.historySort='old';renderHistory()" class="flex-1 py-1.5 text-xs font-semibold rounded-lg transition-colors ${state.historySort==='old'?'bg-white text-green-700 shadow-sm':'text-gray-500'}">古い順</button>
       </div>
       <p class="text-xs text-gray-400">${filtered.length}件</p>
       <div class="space-y-2">${cards}</div>
